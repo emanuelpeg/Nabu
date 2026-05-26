@@ -1,6 +1,6 @@
 # Nabu 📜
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-EPL%202.0-red.svg)](https://opensource.org/licenses/EPL-2.0)
 [![Database: Agnostic](https://img.shields.io/badge/Database-Agnostic-blue.svg)](#)
 [![Inspired By: PostgREST](https://img.shields.io/badge/Inspired%20By-PostgREST-orange.svg)](https://postgrest.org/)
 
