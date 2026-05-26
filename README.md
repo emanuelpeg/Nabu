@@ -41,52 +41,12 @@ Nabu maps HTTP methods to both Schema operations (DDL) and Data operations (DML)
 | **PATCH** | `/tables/:name` | Update rows matching a condition | `payload: {"status": "active"}` *with query filters* |
 | **DELETE** | `/tables/:name` | Delete rows matching a condition | `/tables/users?id=eq.5` |
 
----
-
-## 🛠️ Tech Stack & Structure
-
-- **Core Engine:** Written with adaptability in mind (e.g., Node.js/TypeScript, Go, or Python).
-- **Database Driver Interface:** An abstract adapter layer to easily swap between SQL engines.
-
-```text
-nabu/
-├── src/
-│   ├── config/          # Environment and DB connection settings
-│   ├── adapters/        # Database drivers (PostgresAdapter, MySQLAdapter)
-│   ├── parser/          # Converts URL query strings into structured SQL AST
-│   ├── routes/          # Dynamic HTTP route handlers (/tables, /tables/:name)
-│   └── server.js        # Application entrypoint
-├── tests/               # Integration tests for different DB engines
-├── .env.example         # Template for database configuration
-└── README.md
-```
-
----
-
 ## ⚙️ Getting Started
 
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/nabu.git
 cd nabu
-```
-
-### 2. Configure Environment
-Create a `.env` file based on `.env.example`:
-```env
-PORT=3000
-DB_TYPE=postgres # postgres, mysql, sqlite
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=nabu_user
-DB_PASSWORD=secret
-DB_NAME=nabu_db
-```
-
-### 3. Install & Run (Example for Node/TS)
-```bash
-npm install
-npm run dev
 ```
 
 ---
@@ -104,4 +64,4 @@ npm run dev
 
 ## 📄 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This project is open-source and available under the Eclipse Public License 2.0 (EPL-2.0).
