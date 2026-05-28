@@ -5,12 +5,53 @@ import org.emanuelpeg.nabu.model.*
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.sql.ResultSet
 
 @Service
 class SchemaServiceImpl(
     private val adapterFactory: SchemaAdapterFactory,
     private val jdbcTemplate: JdbcTemplate
 ) : SchemaService {
+
+    override fun listTables(): List<String?> {
+        val sql = """
+            SELECT TABLE_NAME 
+            FROM INFORMATION_SCHEMA.TABLES 
+            WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'PUBLIC'
+        """.trimIndent()
+
+        return jdbcTemplate.queryForList(sql, String::class.java)
+    }
+
+    override fun getTableDetails(tableName: String): Table? {
+        val tables = listTables()
+        if (tables.none { it.equals(tableName, ignoreCase = true) }) {
+            return null
+        }
+
+        val sql = """
+            SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = 'PUBLIC'
+            ORDER BY ORDINAL_POSITION
+        """.trimIndent()
+
+        val tableParam = tableName.uppercase()
+
+        val columns = jdbcTemplate.query(sql, { rs: ResultSet, _: Int ->
+            Column(
+                name = rs.getString("COLUMN_NAME"),
+                type = ColumnType.STRING,
+                isNullable = rs.getString("IS_NULLABLE") == "YES",
+                isAutoIncrement = false, // Extraer esto suele depender del motor
+                defaultValue = rs.getString("COLUMN_DEFAULT")
+            )
+        }, tableParam)
+
+        return Table(
+            name = tableName,
+            columns = columns)
+    }
 
     @Transactional
     override fun createTable(table: Table) {

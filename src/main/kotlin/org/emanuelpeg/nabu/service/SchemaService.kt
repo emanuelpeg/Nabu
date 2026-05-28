@@ -8,6 +8,10 @@ import org.emanuelpeg.nabu.model.Table
 
 interface SchemaService {
 
+    fun listTables(): List<String?>
+
+    fun getTableDetails(tableName: String): Table?
+
     fun createTable(table: Table)
 
     fun dropTable(tableName: String)

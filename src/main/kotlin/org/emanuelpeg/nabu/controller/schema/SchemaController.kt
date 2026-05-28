@@ -12,6 +12,23 @@ class SchemaController(
     private val schemaService: SchemaService
 ) {
 
+    @GetMapping
+    fun listTables(): ResponseEntity<List<String?>> {
+        val tables = schemaService.listTables()
+        return ResponseEntity.ok(tables)
+    }
+
+    @GetMapping("/{tableName}")
+    fun getTableDetails(@PathVariable tableName: String): ResponseEntity<Any> {
+        val tableInfo = schemaService.getTableDetails(tableName)
+        return if (tableInfo != null) {
+            ResponseEntity.ok(tableInfo)
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(mapOf("error" to "La tabla '$tableName' no existe en el esquema."))
+        }
+    }
+
     @PostMapping
     fun createTable(@RequestBody table: Table): ResponseEntity<Map<String, String>> {
         schemaService.createTable(table)
