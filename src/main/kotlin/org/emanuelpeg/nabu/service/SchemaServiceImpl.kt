@@ -17,7 +17,7 @@ class SchemaServiceImpl(
         val sql = """
             SELECT TABLE_NAME 
             FROM INFORMATION_SCHEMA.TABLES 
-            WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = 'PUBLIC'
+            WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA = DATABASE()
         """.trimIndent()
 
         return jdbcTemplate.queryForList(sql, String::class.java)
@@ -32,7 +32,7 @@ class SchemaServiceImpl(
         val sql = """
             SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_DEFAULT
             FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = 'PUBLIC'
+            WHERE TABLE_NAME = ? AND TABLE_SCHEMA = DATABASE()
             ORDER BY ORDINAL_POSITION
         """.trimIndent()
 
